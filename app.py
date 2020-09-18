@@ -3,7 +3,7 @@ import shutil
 
 current_dir = ""
 # current_dir = os.getcwd()
-# os.chdir('/Users/Callasto/Downloads/downloads_test')
+# os.chdir('')
 
 for f in os.listdir(current_dir):
   filename, file_ext = os.path.splitext(f)
