@@ -23,8 +23,9 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     # Print New Line on Complete
     if iteration == total: 
         print()
-
-def create_files(cur_dir):
+        
+# Creates Required Sorted Folders
+def create_folders(cur_dir):
   folders = [item for item in input("Enter folders seperated with coma : ").split(",")] 
   confirm_folders = input(f'Confirm Folders Created "{folders}" (y/n) ')
   if confirm_folders == 'y' and len(folders) > 0:
@@ -35,12 +36,13 @@ def create_files(cur_dir):
   else:
     print("Please enter required folders.")
 
+#Sorts Files in Provided Directory
 def sort_files(cur_dir):
   print('Sorting...')
-  
+
   files_length = len(os.listdir(cur_dir))
   total_files = 0
-  # Initial call to print 0% progress
+  
   printProgressBar(total_files, files_length, prefix = 'Progress:', suffix = 'Complete', length = 50)
   
   for f in os.listdir(cur_dir):
@@ -70,7 +72,6 @@ def sort_files(cur_dir):
       pass
   
     time.sleep(0.1)
-    # Update Progress Bar
     printProgressBar(total_files, files_length, prefix = 'Progress:', suffix = 'Complete', length = 50)
 
   print(f'Sorted : {total_files} files')
@@ -89,7 +90,7 @@ if len(current_dir) == 0:
 else:
   confirm_input = input(f'Confirm folder pathway {current_dir} (y/n) ')
   if confirm_input == 'y':
-    create_files(current_dir)
+    create_folders(current_dir)
     sort_files(current_dir)
   else:
     print("Please enter correct file pathway")
