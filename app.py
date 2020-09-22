@@ -24,29 +24,41 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     if iteration == total: 
         print()
         
-# Creates Required Sorted Folders
+#Creates Required Sorted Folders
 def create_folders(cur_dir):
-  folders = [item for item in input("Enter folders seperated with coma : ").split(",")] 
-  confirm_folders = input(f'Confirm Folders Created "{folders}" (y/n) ')
-  if confirm_folders == 'y' and len(folders) > 0:
-    gh = folders
-    for folder in gh:
-      os.mkdir(os.path.join(cur_dir,str(folder)))
-      print(f'Created folder...{folder}')
+  folders = [item for item in input("Enter folders seperated with coma : ").split(", ")]
+  if folders == ['']:
+    print("Please enter a folder.")
+    folders = [item for item in input("Enter folders seperated with coma : ").split(", ")]
   else:
-    print("Please enter required folders.")
+    loop = True
+    confirm_folders = str(input(f'Confirm folders created : {folders} (y/n) '))
+    while loop:
+      if confirm_folders == 'y':
+        gh = folders
+        for folder in gh:
+          os.mkdir(os.path.join(cur_dir,str(folder)))
+          print(f'Created folder...{folder}')
+        loop = False
+      elif confirm_folders == 'n':
+        print("Please enter required folders.")
+        folders = [item for item in input("Enter folders seperated with coma : ").split(", ")] 
+        confirm_folders = str(input(f'Confirm folders created : {folders} (y/n) '))
+      else:
+        print("Please confirm file pathway with 'y' or 'n'.")
+        folders = [item for item in input("Enter folders seperated with coma : ").split(", ")] 
 
 #Sorts Files in Provided Directory
 def sort_files(cur_dir):
   print('Sorting...')
 
   files_length = len(os.listdir(cur_dir))
-  total_files = 0
+  total_sorted_files = 0
   
-  printProgressBar(total_files, files_length, prefix = 'Progress:', suffix = 'Complete', length = 50)
+  printProgressBar(total_sorted_files, files_length, prefix = 'Progress:', suffix = 'Complete', length = 50)
   
   for f in os.listdir(cur_dir):
-    total_files += 1
+    total_sorted_files += 1
     filename, file_ext = os.path.splitext(f)
     try:
       if not file_ext:
@@ -72,9 +84,9 @@ def sort_files(cur_dir):
       pass
   
     time.sleep(0.1)
-    printProgressBar(total_files, files_length, prefix = 'Progress:', suffix = 'Complete', length = 50)
+    printProgressBar(total_sorted_files, files_length, prefix = 'Progress:', suffix = 'Complete', length = 50)
 
-  print(f'Sorted : {total_files} files')
+  print(f'Sorted : {total_sorted_files} files')
 
 
 print("""
@@ -86,14 +98,23 @@ Please enter folder pathway. Ex : Users/Documents/sort_folder
 current_dir = input("Folder pathway : ")
 
 if len(current_dir) == 0:
-  print("Please enter folder pathway")
+  print("Please enter a folder pathway")
+  current_dir = input("Folder pathway : ")
 else:
-  confirm_input = input(f'Confirm folder pathway {current_dir} (y/n) ')
-  if confirm_input == 'y':
-    create_folders(current_dir)
-    sort_files(current_dir)
-  else:
-    print("Please enter correct file pathway")
+  loop = True
+  confirm_input = str(input(f'Confirm folder pathway {current_dir} (y/n) '))
+  while loop:
+    if confirm_input == 'y':
+      create_folders(current_dir)
+      sort_files(current_dir)
+      loop = False
+    elif confirm_input == 'n':
+      print("Please enter correct file pathway")
+      current_dir = input("Folder pathway : ")
+      confirm_input = input(f'Confirm folder pathway {current_dir} (y/n) ')
+    else:
+      print("Please confirm file pathway with 'y' or 'n'.")
+      confirm_input = input(f'Confirm folder pathway {current_dir} (y/n) ')
 
 print("""
 **** Finished Running...f_o ****

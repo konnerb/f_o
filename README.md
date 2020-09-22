@@ -1,4 +1,4 @@
 ## f_o
 
-A simple file organizer made in Python
+A simple and dynamic file organizer created in Python.
 
