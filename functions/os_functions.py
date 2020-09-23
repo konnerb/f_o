@@ -17,11 +17,13 @@ def create_folders(current_dir):
           gh = folders
           for folder in gh:
             try:
-              os.mkdir(os.path.join(current_dir, str(folder)))
-              print(style.green + f'Created folder...{folder}' + style.reset)
-            
+              # print(os.path.exists(current_dir + '/' + str(folder)))
+              # if not os.path.exists(current_dir + '/' + str(folder)):
+                os.mkdir(os.path.join(current_dir, str(folder)))
+                print(style.green + f'Created folder...{folder}' + style.reset)
+
             except (FileExistsError, PermissionError):
-              pass
+              print(folder, 'already exists...')
 
           run_prompts = False
         elif confirm_folders == 'n':

@@ -1,3 +1,4 @@
+import os
 
 # Print iterations progress
 def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
@@ -20,7 +21,13 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     # Print New Line on Complete
     if iteration == total: 
         print()
-        
+
+def validate_path(current_dir, *folder):
+  if current_dir and folder:
+    return bool(os.path.exists(current_dir + '/' + str(folder)))
+  else:
+    return bool(os.path.exists(current_dir))
+
 class style: 
     reset='\033[0m'
     error='\033[31m'
