@@ -10,7 +10,7 @@ Please enter folder pathway. Ex : User/Documents/sort_folder
 run_f_o = True
 
 while run_f_o:
-  current_dir = input(Style.lightcyan + "Folder pathway : " + Style.reset)
+  current_dir = input(Style.lightcyan + "Folder pathway : " + Style.reset).strip()
   if not validate_path(current_dir):
     print_error(f'{current_dir} does not exist')
   elif len(current_dir) == 0:
