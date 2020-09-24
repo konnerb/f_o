@@ -4,7 +4,7 @@ from functions.utlis import Style, validate_path, print_error, print_success, pr
 print_primary("""
 **** Running...f_o ****
 
-Please enter folder pathway. Ex : Users/Documents/sort_folder
+Please enter folder pathway. Ex : User/Documents/sort_folder
 """)
 
 run_f_o = True

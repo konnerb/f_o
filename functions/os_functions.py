@@ -4,32 +4,38 @@ import time
 
 from functions.utlis import printProgressBar, Style, print_error, print_success, print_primary
 
+conf = {
+  'Images':['.png', '.jpg', 'jpeg'],
+  'Documents':['.pdf'],
+  'Music':['.mp3', '.aiff', 'jpeg'],
+}
+
 #Creates Required Sorted Folders
 def create_folders(current_dir):
   run_prompts = True
   while run_prompts: 
-      folders = [item for item in input(Style.lightcyan + "Enter folders seperated with coma : " + Style.reset).split(", ")]
-      if folders == ['']:
-        print_error("Please enter a folder.")
+    folders = [item for item in input(Style.lightcyan + "Enter folders seperated with coma : " + Style.reset).replace(", ", ",").split(",")]
+    if folders == ['']:
+      print_error("Please enter a folder.")
+    else:
+      confirm_folders = str(input(Style.orange + f'Confirm folders created : {folders} (y/n) ' + Style.reset))
+      if confirm_folders == 'y':
+        gh = folders
+        for folder in gh:
+          try:
+            # print(os.path.exists(current_dir + '/' + str(folder)))
+            # if not os.path.exists(current_dir + '/' + str(folder)):
+              os.mkdir(os.path.join(current_dir, str(folder)))
+              print_success(f'Created folder...{folder}')
+
+          except (FileExistsError, PermissionError):
+            print_error(f'{folder} already exists...')
+
+        run_prompts = False
+      elif confirm_folders == 'n':
+        print_error("Please enter required folders.")
       else:
-        confirm_folders = str(input(Style.orange + f'Confirm folders created : {folders} (y/n) ' + Style.reset))
-        if confirm_folders == 'y':
-          gh = folders
-          for folder in gh:
-            try:
-              # print(os.path.exists(current_dir + '/' + str(folder)))
-              # if not os.path.exists(current_dir + '/' + str(folder)):
-                os.mkdir(os.path.join(current_dir, str(folder)))
-                print_success(f'Created folder...{folder}')
-
-            except (FileExistsError, PermissionError):
-              print_error(f'{folder} already exists...')
-
-          run_prompts = False
-        elif confirm_folders == 'n':
-          print_error("Please enter required folders.")
-        else:
-          print_error("Please confirm file pathway with 'y' or 'n'.")
+        print_error("Please confirm file pathway with 'y' or 'n'.")
 
 #Sorts Files in Provided Directory
 def sort_files(current_dir):
@@ -62,7 +68,7 @@ def sort_files(current_dir):
       else:
         shutil.move(
           os.path.join(current_dir, f'{filename}{file_ext}'),
-          os.path.join(current_dir, 'Other Stuff', f'{filename}{file_ext}'))
+          os.path.join(current_dir, 'Other', f'{filename}{file_ext}'))
 
     except (FileNotFoundError, PermissionError):
       pass
