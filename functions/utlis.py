@@ -1,6 +1,6 @@
 import os
 
-# Colours For Console Text
+# Colours for console text
 class Style: 
   reset='\033[0m'
   error='\033[31m'
@@ -19,13 +19,13 @@ class Style:
   lightgreen='\033[92m'
   yellow='\033[93m'
 
-# Print Functions With Style colours
+# Print functions with Style colours
 print_error = lambda text: print(Style.error + text + Style.reset)
 print_success = lambda text: print(Style.green + text + Style.reset)
 print_primary = lambda text: print(Style.lightcyan + text + Style.reset)
 print_secondary = lambda text: print(Style.orange + text + Style.reset)
 
-# Print iterations progress
+# Prints iteration progress
 def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
   """
   Call in a loop to create terminal progress bar
@@ -43,11 +43,12 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
   filledLength = int(length * iteration // total)
   bar = fill * filledLength + '-' * (length - filledLength)
   print(Style.lightcyan + f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd + Style.reset)
-  # Print New Line on Complete
+  # Print new line on complete
   if iteration == total: 
       print()
 
-def validate_path(current_dir, *folder):
+# Validates file directories
+def validate_path(current_dir, folder = ''):
   if current_dir and folder:
     return bool(os.path.exists(current_dir + '/' + str(folder)))
   else:

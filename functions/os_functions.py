@@ -2,23 +2,28 @@ import os
 import shutil
 import time
 
-from functions.utlis import printProgressBar, Style, print_error, print_success, print_primary
+from functions.utlis import printProgressBar, validate_path, Style, print_error, print_success, print_primary
 
 conf = {
   'Images':['.png', '.jpg', 'jpeg'],
   'Documents':['.pdf'],
-  'Music':['.mp3', '.aiff', 'jpeg'],
+  'Music':['.mp3', '.aiff', 'jpeg']
 }
 
-#Creates Required Sorted Folders
+# Creates required sorted folders
 def create_folders(current_dir):
   run_prompts = True
   while run_prompts: 
-    folders = [item for item in input(Style.lightcyan + "Enter folders seperated with coma : " + Style.reset).replace(", ", ",").split(",")]
+    folders = [item for item in input(Style.lightcyan + "Enter folders seperated by coma : " + Style.reset).replace(", ", ",").split(",")]
     if folders == ['']:
       print_error("Please enter a folder.")
     else:
+      file_exists = [f for f in folders if validate_path(current_dir, f)]
+      if file_exists:
+        print_error(f'{file_exists} does not exist')
+      
       confirm_folders = str(input(Style.orange + f'Confirm folders created : {folders} (y/n) ' + Style.reset))
+      
       if confirm_folders == 'y':
         gh = folders
         for folder in gh:
@@ -28,8 +33,10 @@ def create_folders(current_dir):
               os.mkdir(os.path.join(current_dir, str(folder)))
               print_success(f'Created folder...{folder}')
 
-          except (FileExistsError, PermissionError):
+          except FileExistsError:
             print_error(f'{folder} already exists...')
+          except PermissionError:
+            print_error('Access denied...')
 
         run_prompts = False
       elif confirm_folders == 'n':
@@ -37,8 +44,9 @@ def create_folders(current_dir):
       else:
         print_error("Please confirm file pathway with 'y' or 'n'.")
 
-#Sorts Files in Provided Directory
+# Sorts files in provided directory
 def sort_files(current_dir):
+  print()
   print_success('Sorting...\n')
 
   files_length = len(os.listdir(current_dir))
@@ -70,8 +78,11 @@ def sort_files(current_dir):
           os.path.join(current_dir, f'{filename}{file_ext}'),
           os.path.join(current_dir, 'Other', f'{filename}{file_ext}'))
 
-    except (FileNotFoundError, PermissionError):
-      pass
+    except FileNotFoundError:
+      print_error(f'{filename} not found...')
+
+    except PermissionError:
+      print_error('Access denied...')
   
     time.sleep(0.1)
     printProgressBar(total_sorted_files, files_length, prefix = 'Progress:', suffix = 'Complete', length = 50)
