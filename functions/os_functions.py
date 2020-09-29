@@ -4,11 +4,56 @@ import time
 
 from functions.utlis import printProgressBar, validate_path, Style, print_error, print_success, print_primary
 
-conf = {
-    'Images': ['.png', '.jpg', 'jpeg'],
-    'Documents': ['.pdf'],
-    'Music': ['.mp3', '.aiff', 'jpeg']
+config: dict = {
+    'Images': ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.HEIC'],
+    'Documents': ['.pdf', '.doc', '.docx', 'xls', 'odt', '.ps', '.wpd', '.html'],
+    'Music': ['.mp3', '.aiff', '.wav', '.acc', '.m4p''.aa'],
+    'Movies': ['mp4', '.mov', '.flv', '.m4v', '.3gp', '.3gp', 'MTS', '.M2TS', '.TS']
 }
+
+
+def scan_folders(current_dir: str):
+    """
+    Checks current directory for required folders.
+    @params:
+        current_dir  - Required  : current directory (Str)
+    """
+    total_files: int = 0
+    newF: dict = {}
+    for f in os.listdir(current_dir):
+        total_files += 1
+        filename, file_ext = os.path.splitext(f)
+        print(filename, file_ext)
+        try:
+            if not file_ext:
+                pass
+            else:
+                for key in config:
+                    if file_ext in config[key]:
+                        if key in newF:
+                            newF[key] += 1
+                            break
+                            #print('iterated ', newF[key])
+                        else:
+                            newF[key] = 1
+                            #print('created', newF[key])
+                            #os.mkdir(os.path.join(current_dir, str(key))) 
+                    else:
+                        print('No file extenion exits...', filename)
+                        if 'Other' in newF:
+                            newF['Other'] += 1
+                        else:
+                            newF['Other'] = 1
+                        
+            
+        
+        except FileExistsError:
+            print_error(f'{f} already exists...')
+        except PermissionError:
+            print_error('Access denied...')
+
+    print('Required folders for sorting: ',
+          newF, 'Total files : ', total_files)
 
 
 def create_folders(current_dir: str):
@@ -19,9 +64,11 @@ def create_folders(current_dir: str):
     """
     run_prompts: bool = True
     while run_prompts:
+        scan_folders(current_dir)
         folders: list = [item for item in input(
             Style.lightcyan + "Enter folders seperated by coma : " + Style.reset).replace(", ", ",").split(",")]
-        file_exists: list = [f for f in folders if validate_path(current_dir, f)]
+        file_exists: list = [
+            f for f in folders if validate_path(current_dir, f)]
         if folders == ['']:
             print_error("Please enter a folder.")
         else:
