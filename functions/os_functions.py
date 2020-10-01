@@ -31,6 +31,9 @@ def required_folders(current_dir: str):
         try:
             if not file_ext:
                 pass
+            elif not config:
+                print_error("Please create a valid config e.g. config = {'Images': ['.png', '.jpg'],} \n")
+                break
             else:
                 for key in config:
                     if file_ext in config[key]:
@@ -51,7 +54,8 @@ def required_folders(current_dir: str):
         except PermissionError:
             print_error('Access denied...')
 
-    print_success(f'Required folders for sorting: {newF} Total files : {total_files}')
+    if newF:
+        print_success(f'Required folders for sorting: {newF} Total files : {total_files}')
 
     return [key for key in newF]
 
@@ -66,11 +70,12 @@ def create_folders(current_dir: str):
     while run_prompts:
         folders: list = required_folders(current_dir)
         file_exists: list = [f for f in folders if validate_path(current_dir, f)]
-        if folders == ['']:
-            print_error("Please enter a folder.")
+        if not folders:
+            print_error(f'Current directory : {current_dir} is empty')
+            break
         else:
             if file_exists and file_exists != ['']:
-                print_error(f'{file_exists} already exist')
+                print_error(f'{file_exists} already exist.. To continue, confirm with "y" below')
 
             confirm_folders = str(input(
                 Style.orange + f'Confirm folders created : {folders} (y/n) ' + Style.reset).lower())
@@ -89,11 +94,13 @@ def create_folders(current_dir: str):
 
                 run_prompts = False
             elif confirm_folders == 'n':
-                print_error("Please enter required folders.")
+                print_error("Please revise config.")
+                break
             else:
-                print_error("Please confirm file pathway with 'y' or 'n'.")
+                print_error("\n Please confirm file pathway with 'y' or 'n'. \n")
 
-    sort_files(current_dir, folders)
+    if folders and confirm_folders == 'y':
+        sort_files(current_dir, folders)
 
 
 def sort_files(current_dir: str, folders: list):
@@ -122,7 +129,7 @@ def sort_files(current_dir: str, folders: list):
                     if folder == 'Other':
                         pass
                     elif not folder in config:
-                        print_error(f'{folder} not in config : {config.keys()}')
+                        print_error(f'{folder} not in config : {config.keys()} \n')
                         break
                     elif file_ext in config[folder]:
                         shutil.move(
