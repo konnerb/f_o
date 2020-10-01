@@ -34,7 +34,7 @@ def required_folders(current_dir: str):
                     if file_ext in config[key]:
                         #print('File_Ext exists in config', key)
                         if key in newF:
-                            newF[key] += 1  
+                            newF[key] += 1
                             #print('iterated ', newF[key])
                             break
                         else:
@@ -49,29 +49,35 @@ def required_folders(current_dir: str):
                     else:
                         newF['Other'] = 1
                         #print('Created other', filename)
-                        
+
         except FileExistsError:
             print_error(f'{f} already exists...')
         except PermissionError:
             print_error('Access denied...')
 
-    print('Required folders for sorting: ',
-          newF, 'Total files : ', total_files)
+    print_success(f'Required folders for sorting: {newF} Total files : {total_files}')
+
+    return [key for key in newF]
 
 
-def create_folders(current_dir: str):
+def create_folders(current_dir: str, manual_config=False):
     """
     Creates required sorted folders
     @params:
-        current_dir  - Required  : current directory (Str)
+        current_dir   - Required  : current directory (Str)
+        manual_config - Optional  : Using manual configuration (Bool)
     """
     run_prompts: bool = True
     while run_prompts:
-        required_folders(current_dir)
-        folders: list = [item for item in input(
-            Style.lightcyan + "Enter folders seperated by coma : " + Style.reset).replace(", ", ",").split(",")]
-        file_exists: list = [
-            f for f in folders if validate_path(current_dir, f)]
+        if manual_config:
+            folders: list = required_folders(current_dir)
+            file_exists: list = [
+                f for f in folders if validate_path(current_dir, f)]
+        elif not manual_config:
+            folders: list = [item for item in input(
+                Style.lightcyan + "Enter folders seperated by coma : " + Style.reset).replace(", ", ",").split(",")]
+            file_exists: list = [
+                f for f in folders if validate_path(current_dir, f)]
         if folders == ['']:
             print_error("Please enter a folder.")
         else:
@@ -101,15 +107,17 @@ def create_folders(current_dir: str):
             else:
                 print_error("Please confirm file pathway with 'y' or 'n'.")
 
+    sort_files(current_dir, folders)
 
-def sort_files(current_dir: str):
+
+def sort_files(current_dir: str, folders: list):
     """
     Sorts files in provided directory
     @params:
-        current_dir  - Required  : current directory (Str)
+        current_dir  - Required  : Current directory (Str)
+        folders      - Required  : Required folders for sorting (List)
     """
     print_success('\nSorting...\n')
-
     files_length: int = len(os.listdir(current_dir))
     total_sorted_files: int = 0
 
@@ -123,22 +131,21 @@ def sort_files(current_dir: str):
         try:
             if not file_ext:
                 pass
-            elif file_ext in ('.png', '.jpg', 'jpeg'):
-                shutil.move(
-                    os.path.join(current_dir, f'{filename}{file_ext}'),
-                    os.path.join(current_dir, 'Images', f'{filename}{file_ext}'))
-            elif file_ext in ('.mp3', '.aiff'):
-                shutil.move(
-                    os.path.join(current_dir, f'{filename}{file_ext}'),
-                    os.path.join(current_dir, 'Music', f'{filename}{file_ext}'))
-            elif file_ext in ('.pdf'):
-                shutil.move(
-                    os.path.join(current_dir, f'{filename}{file_ext}'),
-                    os.path.join(current_dir, 'Documents', f'{filename}{file_ext}'))
             else:
-                shutil.move(
-                    os.path.join(current_dir, f'{filename}{file_ext}'),
-                    os.path.join(current_dir, 'Other', f'{filename}{file_ext}'))
+                for folder in folders:
+                    if folder == 'Other':
+                        pass
+                    elif file_ext in config[folder]:
+                        shutil.move(
+                            os.path.join(current_dir, f'{filename}{file_ext}'),
+                            os.path.join(current_dir, folder, f'{filename}{file_ext}'))
+                        break
+                    else:
+                        pass
+                else:
+                    shutil.move(
+                        os.path.join(current_dir, f'{filename}{file_ext}'),
+                        os.path.join(current_dir, 'Other', f'{filename}{file_ext}'))
 
         except FileNotFoundError:
             print_error(f'{filename} not found...')
