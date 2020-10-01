@@ -11,6 +11,10 @@ config: dict = {
     'Movies': ['.mp4', '.mov', '.flv', '.m4v', '.3gp', '.3gp', 'MTS', '.M2TS', '.TS']
 }
 
+filter_files: dict = {
+
+}
+
 
 def required_folders(current_dir: str):
     """
@@ -24,31 +28,23 @@ def required_folders(current_dir: str):
     for f in os.listdir(current_dir):
         total_files += 1
         filename, file_ext = os.path.splitext(f)
-        #print(filename, file_ext)
         try:
             if not file_ext:
                 pass
             else:
                 for key in config:
-                    #print(config[key], file_ext)
                     if file_ext in config[key]:
-                        #print('File_Ext exists in config', key)
                         if key in newF:
                             newF[key] += 1
-                            #print('iterated ', newF[key])
                             break
                         else:
                             newF[key] = 1
-                            #print('created', newF[key])
                             break
                 else:
-                    #print('File_Ext not in config', key)
                     if 'Other' in newF:
                         newF['Other'] += 1
-                        #print('Iterated other', filename)
                     else:
                         newF['Other'] = 1
-                        #print('Created other', filename)
 
         except FileExistsError:
             print_error(f'{f} already exists...')
@@ -60,24 +56,16 @@ def required_folders(current_dir: str):
     return [key for key in newF]
 
 
-def create_folders(current_dir: str, manual_config=False):
+def create_folders(current_dir: str):
     """
     Creates required sorted folders
     @params:
         current_dir   - Required  : current directory (Str)
-        manual_config - Optional  : Using manual configuration (Bool)
     """
     run_prompts: bool = True
     while run_prompts:
-        if manual_config:
-            folders: list = required_folders(current_dir)
-            file_exists: list = [
-                f for f in folders if validate_path(current_dir, f)]
-        elif not manual_config:
-            folders: list = [item for item in input(
-                Style.lightcyan + "Enter folders seperated by coma : " + Style.reset).replace(", ", ",").split(",")]
-            file_exists: list = [
-                f for f in folders if validate_path(current_dir, f)]
+        folders: list = required_folders(current_dir)
+        file_exists: list = [f for f in folders if validate_path(current_dir, f)]
         if folders == ['']:
             print_error("Please enter a folder.")
         else:
@@ -85,14 +73,12 @@ def create_folders(current_dir: str, manual_config=False):
                 print_error(f'{file_exists} already exist')
 
             confirm_folders = str(input(
-                Style.orange + f'Confirm folders created : {folders} (y/n) ' + Style.reset))
+                Style.orange + f'Confirm folders created : {folders} (y/n) ' + Style.reset).lower())
 
             if confirm_folders == 'y':
                 gh = folders
                 for folder in gh:
                     try:
-                      # print(os.path.exists(current_dir + '/' + str(folder)))
-                      # if not os.path.exists(current_dir + '/' + str(folder)):
                         os.mkdir(os.path.join(current_dir, str(folder)))
                         print_success(f'Created folder...{folder}')
 
@@ -135,6 +121,9 @@ def sort_files(current_dir: str, folders: list):
                 for folder in folders:
                     if folder == 'Other':
                         pass
+                    elif not folder in config:
+                        print_error(f'{folder} not in config : {config.keys()}')
+                        break
                     elif file_ext in config[folder]:
                         shutil.move(
                             os.path.join(current_dir, f'{filename}{file_ext}'),
@@ -160,4 +149,4 @@ def sort_files(current_dir: str, folders: list):
     t1_stop = time.process_time()
     print()
     print_success(
-        f'Sorted : {total_sorted_files} files in {round(t1_stop - t1_start, 3)} seconds')
+        f'Sorted : {total_sorted_files - len(folders)} files in {round(t1_stop - t1_start, 3)} seconds')
