@@ -1,8 +1,8 @@
 
 '''
-  For f_o to work, ensure more than one key, as in "Images", and more than one value ['.png', ...] is
-  in the config dictionary below. For any files that are not in the config, they'll be automatically
-  sorted in an 'Others' folder.
+For f_o to work, ensure more than one key, as in "Images," and more than one value ['.png', ...] is 
+in the config dictionary below. Any files that are not in the config will be automatically sorted 
+into an 'Others' folder.
   
   Examples:
     >> 'Images': ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.HEIC'],
