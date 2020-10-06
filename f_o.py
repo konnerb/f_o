@@ -20,7 +20,7 @@ while run_f_o:
     else:
         print_success("Pathway Exists!\n")
         confirm_input = str(input(
-            Style.orange + f'Confirm folder pathway : {current_dir} (y/n) ' + Style.reset).lower())
+            Style.orange + f'Confirm folder pathway : {current_dir} (y/n) > ' + Style.reset).lower())
         if confirm_input == 'y':
             # Initiates file sorting process
             init_f_o(current_dir)

@@ -1,14 +1,21 @@
 
 '''
-For f_o to work, ensure more than one key, as in "Images," and more than one value ['.png', ...] is 
+For f_o to work, ensure more than one key, as in 'Music', and more than one value ['.mp4'] or ['Hip-Hop'] is 
 in the config dictionary below. Any files that are not in the config will be automatically sorted 
 into an 'Others' folder.
   
   Examples:
-    >> 'Images': ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.HEIC'],
-    >> 'Documents': ['.pdf', '.doc', '.docx', '.xls', '.odt', '.ps', '.wpd', '.html'],
-    >> 'Music': ['.mp3', '.aiff', '.wav', '.acc', '.m4p', '.aa'],
-    >> 'Movies': ['.mp4', '.mov', '.flv', '.m4v', '.3gp', '.3gp', 'MTS', '.M2TS', '.TS']
+    
+    Sort files by generic file extentions:
+      >> 'Images': ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.HEIC'],
+      >> 'Documents': ['.pdf', '.doc', '.docx', '.xls', '.odt', '.ps', '.wpd', '.html'],
+      >> 'Music': ['.mp3', '.aiff', '.wav', '.acc', '.m4p', '.aa'],
+      >> 'Movies': ['.mp4', '.mov', '.flv', '.m4v', '.3gp', '.3gp', 'MTS', '.M2TS', '.TS']
+    
+    Or sort files by keywords
+      >> 'Genre': ['House', 'Hip-Hop', 'Pop'],
+      >> 'Cuisine': ['French', 'Jamican', 'Mexican'],
+      >> 'Genre': ['House', 'Hip-Hop', 'Pop']
 
 '''
 
@@ -17,9 +24,6 @@ config: dict = {
     'Images': ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.HEIC'],
     'Documents': ['.pdf', '.doc', '.docx', '.xls', '.odt', '.ps', '.wpd', '.html'],
     'Music': ['.mp3', '.aiff', '.wav', '.acc', '.m4p', '.aa'],
-    'Movies': ['.mp4', '.mov', '.flv', '.m4v', '.3gp', '.3gp', 'MTS', '.M2TS', '.TS']
-}
-
-filter_files: dict = {
-
+    'Movies': ['.mp4', '.mov', '.flv', '.m4v', '.3gp', '.3gp', 'MTS', '.M2TS', '.TS'],
+    'Genre': ['House', 'Hip-Hop', 'Pop'],
 }

@@ -6,6 +6,8 @@ from config import config
 from functions.utlis import printProgressBar, validate_path, Style, print_error, print_success, print_primary
 
 # Initiates file sorting process
+
+
 def init_f_o(current_dir):
     create_folders(current_dir)
 
@@ -19,16 +21,19 @@ def create_folders(current_dir: str):
     run_prompts: bool = True
     while run_prompts:
         folders: list = required_folders(current_dir)
-        file_exists: list = [f for f in folders if validate_path(current_dir, f)]
+        file_exists: list = [
+            f for f in folders if validate_path(current_dir, f)]
         if not folders:
-            print_error(f'Current directory : {current_dir} is empty or has no files')
+            print_error(
+                f'Current directory : {current_dir} is empty or has no files')
             break
         else:
             if file_exists and file_exists != ['']:
-                print_error(f'{file_exists} already exist.. To continue, confirm with "y" below')
+                print_error(
+                    f'{file_exists} already exist.. To continue, confirm with "y" below')
 
             confirm_folders = str(input(
-                Style.orange + f'Confirm folders created : {folders} (y/n) ' + Style.reset).lower())
+                Style.orange + f'Confirm folders created : {folders} (y/n) > ' + Style.reset).lower())
 
             if confirm_folders == 'y':
                 gh = folders
@@ -65,15 +70,14 @@ def required_folders(current_dir: str):
     for f in os.listdir(current_dir):
         filename, file_ext = os.path.splitext(f)
         try:
-            if not file_ext:
-                pass
-            elif not config:
-                print_error("Please create a valid config e.g. config = {'Images': ['.png', '.jpg'],} \n")
+            if not config:
+                print_error(
+                    "Please create a valid config e.g. config = {'Images': ['.png', 'Landsape'],} \n")
                 break
             else:
-                # Determins required folders by sorting through the key values from config
                 total_files += 1
                 for key in config:
+                    # Determins if this file contains an extenstion key value in the config e.g. '.pdf'
                     if file_ext in config[key]:
                         if key in newF:
                             newF[key] += 1
@@ -81,6 +85,15 @@ def required_folders(current_dir: str):
                         else:
                             newF[key] = 1
                             break
+                    # Determins if this file contains given key value in the config e.g. 'Hip-Hop'
+                    elif any([filename.startswith(s) for s in (config[key])]):
+                        if key in newF:
+                            newF[key] += 1
+                            break
+                        else:
+                            newF[key] = 1
+                            break
+                # If this file does not match any key values in the config, it will create an 'Others' folder
                 else:
                     if 'Other' in newF:
                         newF['Other'] += 1
@@ -93,7 +106,8 @@ def required_folders(current_dir: str):
             print_error('Access denied...')
 
     if newF:
-        print_success(f'Required folders for sorting: {newF} Total files : {total_files}')
+        print_success(
+            f'Required folders for sorting: {newF} Total files : {total_files}')
 
     return [key for key in newF]
 
@@ -121,20 +135,29 @@ def sort_files(current_dir: str, folders: list):
             if not file_ext:
                 pass
             else:
-                # determins through the key values from config where to sort files
                 for folder in folders:
                     if folder == 'Other':
                         pass
                     elif not folder in config:
-                        print_error(f'{folder} not in config : {config.keys()}\n')
+                        print_error(
+                            f'{folder} not in config : {config.keys()}\n')
                         break
+                    # Sorts this file if it contains an extenstion key value in the config e.g. '.pdf'
                     elif file_ext in config[folder]:
+                        shutil.move(
+                            os.path.join(current_dir, f'{filename}{file_ext}'),
+                            os.path.join(current_dir, folder, f'{filename}{file_ext}'))
+                        break
+                    # Sorts file if contains given key value in the config e.g. 'Hip-Hop'
+                    elif any([filename.startswith(s) for s in (config[folder])]):
                         shutil.move(
                             os.path.join(current_dir, f'{filename}{file_ext}'),
                             os.path.join(current_dir, folder, f'{filename}{file_ext}'))
                         break
                     else:
                         pass
+                # If this file does not match any key values in the config,
+                # it will be sorted into an 'Others' folder
                 else:
                     shutil.move(
                         os.path.join(current_dir, f'{filename}{file_ext}'),
