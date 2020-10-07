@@ -81,15 +81,12 @@ def required_folders(current_dir: str):
                 total_files += 1
                 for key in config:
                     # Determins if this file should be removed
-                    if (key == 'DELETE' and any([d in filename for d in (config['DELETE'])])):
-                        if key in newF:
-                            newF[key] += 1
-                            break
-                        else:
-                            newF[key] = 1
-                            break
-                    # Determins if this file contains an extenstion key value in the config e.g. '.pdf'
-                    elif file_ext in config[key]:
+                    if (
+                        key == 'DELETE' 
+                        and config[key] != ['None']
+                        and any([d in filename for d in (config[key])])
+                        or file_ext in config[key]
+                      ):
                         if key in newF:
                             newF[key] += 1
                             break
@@ -98,6 +95,14 @@ def required_folders(current_dir: str):
                             break
                     # Determins if this file contains given key value in the config e.g. 'Hip-Hop'
                     elif any([s in filename for s in (config[key])]):
+                        if key in newF:
+                            newF[key] += 1
+                            break
+                        else:
+                            newF[key] = 1
+                            break
+                    # Determins if this file contains an extenstion key value in the config e.g. '.pdf'
+                    elif file_ext in config[key]:
                         if key in newF:
                             newF[key] += 1
                             break
@@ -150,7 +155,12 @@ def sort_files(current_dir: str, folders: list):
             if not file_ext:
                 pass
             # Removes file if contains given key value in the config e.g. 'Hip-Hop'
-            elif ('DELETE' in config and any([s in filename for s in (config['DELETE'])])):
+            elif (
+                'DELETE' in config
+                and config['DELETE'] != ['None']
+                and any([d in filename for d in (config['DELETE'])])
+                or file_ext in config['DELETE']
+              ):
                 os.remove(current_dir + '/' + filename + file_ext)
                 deleted_files += 1
                 continue
@@ -162,14 +172,14 @@ def sort_files(current_dir: str, folders: list):
                         print_error(
                             f'{folder} not in config : {config.keys()}\n')
                         break
-                    # Sorts this file if it contains an extenstion key value in the config e.g. '.pdf'
-                    elif file_ext in config[folder]:
+                    # Sorts file if contains given key value in the config e.g. 'Hip-Hop'
+                    elif any([s in filename for s in (config[folder])]):
                         shutil.move(
                             os.path.join(current_dir, f'{filename}{file_ext}'),
                             os.path.join(current_dir, folder, f'{filename}{file_ext}'))
                         break
-                    # Sorts file if contains given key value in the config e.g. 'Hip-Hop'
-                    elif any([filename.startswith(s) for s in (config[folder])]):
+                    # Sorts this file if it contains an extenstion key value in the config e.g. '.pdf'
+                    elif file_ext in config[folder]:
                         shutil.move(
                             os.path.join(current_dir, f'{filename}{file_ext}'),
                             os.path.join(current_dir, folder, f'{filename}{file_ext}'))
@@ -190,11 +200,10 @@ def sort_files(current_dir: str, folders: list):
             print_error('Access denied...')
         
         except OSError as error:
-            print_error(error + 'File cannot be deleted..')
+            print_error(f'{error} \n{filename} cannot be deleted...')
 
         time.sleep(0.1)
-        printProgressBar(total_sorted_files, files_length,
-                         prefix='Progress:', suffix='Complete', length=50)
+        printProgressBar(total_sorted_files, files_length, prefix='Progress:', suffix='Complete', length=50)
 
     t1_stop = time.process_time()
     print_success(
