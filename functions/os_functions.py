@@ -39,8 +39,11 @@ def create_folders(current_dir: str):
                 gh = folders
                 for folder in gh:
                     try:
-                        os.mkdir(os.path.join(current_dir, str(folder)))
-                        print_success(f'Created folder...{folder}')
+                      if folder == "delete": 
+                          pass
+                      else:
+                          os.mkdir(os.path.join(current_dir, str(folder)))
+                          print_success(f'Created folder...{folder}')
 
                     except FileExistsError:
                         print_error(f'{folder} already exists...')
@@ -77,8 +80,16 @@ def required_folders(current_dir: str):
             else:
                 total_files += 1
                 for key in config:
+                    # Determins if this file should be removed
+                    if (key == 'DELETE' and any([d in filename for d in (config['DELETE'])])):
+                        if key in newF:
+                            newF[key] += 1
+                            break
+                        else:
+                            newF[key] = 1
+                            break
                     # Determins if this file contains an extenstion key value in the config e.g. '.pdf'
-                    if file_ext in config[key]:
+                    elif file_ext in config[key]:
                         if key in newF:
                             newF[key] += 1
                             break
@@ -86,7 +97,7 @@ def required_folders(current_dir: str):
                             newF[key] = 1
                             break
                     # Determins if this file contains given key value in the config e.g. 'Hip-Hop'
-                    elif any([filename.startswith(s) for s in (config[key])]):
+                    elif any([s in filename for s in (config[key])]):
                         if key in newF:
                             newF[key] += 1
                             break
@@ -105,9 +116,12 @@ def required_folders(current_dir: str):
         except PermissionError:
             print_error('Access denied...')
 
+    if 'DELETE' in newF:
+        print_error('Deleting : ' + str(newF['DELETE']) + ' files')
+        newF.pop('DELETE')
+    
     if newF:
-        print_success(
-            f'Required folders for sorting: {newF} Total files : {total_files}')
+        print_success(f'Required folders for sorting: {newF} Total files : {total_files}')
 
     return [key for key in newF]
 
@@ -122,6 +136,7 @@ def sort_files(current_dir: str, folders: list):
     print_success('\nSorting...\n')
     files_length: int = len(os.listdir(current_dir))
     total_sorted_files: int = 0
+    deleted_files: int = 0
 
     printProgressBar(total_sorted_files, files_length,
                      prefix='Progress:', suffix='Complete', length=50)
@@ -134,6 +149,11 @@ def sort_files(current_dir: str, folders: list):
         try:
             if not file_ext:
                 pass
+            # Removes file if contains given key value in the config e.g. 'Hip-Hop'
+            elif ('DELETE' in config and any([s in filename for s in (config['DELETE'])])):
+                os.remove(current_dir + '/' + filename + file_ext)
+                deleted_files += 1
+                continue
             else:
                 for folder in folders:
                     if folder == 'Other':
@@ -168,6 +188,9 @@ def sort_files(current_dir: str, folders: list):
 
         except PermissionError:
             print_error('Access denied...')
+        
+        except OSError as error:
+            print_error(error + 'File cannot be deleted..')
 
         time.sleep(0.1)
         printProgressBar(total_sorted_files, files_length,
@@ -175,4 +198,4 @@ def sort_files(current_dir: str, folders: list):
 
     t1_stop = time.process_time()
     print_success(
-        f'\nSorted : {total_sorted_files - len(folders)} files in {round(t1_stop - t1_start, 3)} seconds')
+        f'\nSorted : {total_sorted_files - len(folders)} files \nDeleted : {deleted_files} files \nIn {round(t1_stop - t1_start, 3)} seconds')

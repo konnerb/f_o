@@ -15,12 +15,16 @@ into an 'Others' folder.
     Or sort files by keywords
       >> 'Genre': ['House', 'Hip-Hop', 'Pop'],
       >> 'Cuisine': ['French', 'Jamican', 'Mexican'],
-      >> 'Genre': ['House', 'Hip-Hop', 'Pop']
+
+    Or delete files with keywords
+      >> 'DELETE': ['House', 'Hip-Hop', 'Pop'],
 
 '''
 
 # Edit config here:
 config: dict = {
+    'DELETE': ['maps'], # <<<*** CAUTION: ANY FILE WITH VALUES ENTERED HERE WILL BE PERMANENTLY DELETED
+
     'Images': ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.HEIC'],
     'Documents': ['.pdf', '.doc', '.docx', '.xls', '.odt', '.ps', '.wpd', '.html'],
     'Music': ['.mp3', '.aiff', '.wav', '.acc', '.m4p', '.aa'],

@@ -1,12 +1,19 @@
+import getpass
+
 from functions.os_functions import init_f_o
 from functions.utlis import Style, validate_path, print_error, print_success, print_primary
+
 
 print_primary(f"""
 **** Running...f_o ****
 
+Hey {getpass.getuser()},
+
+Thanks for using f_o!
+
 Please revise config.py for sorting customization.
 
-To start, enter folder pathway. Ex : User/Documents/sort_folder
+To get started, enter a folder pathway. Ex : User/Documents/sort_folder
 """)
 
 run_f_o: bool = True
