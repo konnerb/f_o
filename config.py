@@ -6,8 +6,8 @@ are not found in the config will be automatically sorted into an 'Others' folder
 You can enable or disable keys/values by commenting them out with # for single line or ''' ''' for multiline.
 
 **** USE THE DELETE KEY WITH CAUTION. ANY VALUE ENTERED WILL DELETE YOUR FILES FOREVER ****
-        >>Consider creating a 'Trash' Folder for files you wish to delete. 
-          Then review and discard of the files afterwords.
+        >>  Consider creating a 'Trash' Folder for files you wish to delete. 
+            Then review and discard of the files afterwords.
   
   Examples:
 
