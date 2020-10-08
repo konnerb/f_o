@@ -21,29 +21,28 @@ def create_folders(current_dir: str):
     run_prompts: bool = True
     while run_prompts:
         folders: list = required_folders(current_dir)
-        file_exists: list = [
-            f for f in folders if validate_path(current_dir, f)]
+        file_exists: list = [f for f in folders if validate_path(current_dir, f)]
         if not folders:
             print_error(
                 f'Current directory : {current_dir} is empty or has no files')
             break
         else:
+            time.sleep(0.2)
             if file_exists and file_exists != ['']:
                 print_error(
-                    f'{file_exists} already exist.. To continue, confirm with "y" below')
+                    f'{file_exists} already exist.. To continue, confirm with "y" below \n')
 
             confirm_folders = str(input(
                 Style.orange + f'Confirm folders created : {folders} (y/n) > ' + Style.reset).lower())
-
+            
             if confirm_folders == 'y':
+                print()
+                time.sleep(0.2)
                 gh = folders
                 for folder in gh:
                     try:
-                      if folder == "delete": 
-                          pass
-                      else:
-                          os.mkdir(os.path.join(current_dir, str(folder)))
-                          print_success(f'Created folder...{folder}')
+                        os.mkdir(os.path.join(current_dir, str(folder)))
+                        print_success(f'Created folder...{folder}')
 
                     except FileExistsError:
                         print_error(f'{folder} already exists...')
@@ -52,13 +51,13 @@ def create_folders(current_dir: str):
 
                 run_prompts = False
             elif confirm_folders == 'n':
-                print_error("Please revise config.")
+                print_error("\nPlease revise config. Then restart f_o :)")
                 break
             else:
-                print_error("\nPlease confirm file pathway with 'y' or 'n'.\n")
+                print_error("\nPlease confirm file pathway with 'y' or 'n'.")
 
     if folders and confirm_folders == 'y':
-        sort_files(current_dir, folders)
+        organize_files(current_dir, folders)
 
 
 def required_folders(current_dir: str):
@@ -83,7 +82,7 @@ def required_folders(current_dir: str):
                     # Determins if this file should be removed
                     if (
                         key == 'DELETE' 
-                        and config[key] != ['None']
+                        and config[key] != []
                         and any([d in filename for d in (config[key])])
                         or file_ext in config[key]
                       ):
@@ -126,12 +125,12 @@ def required_folders(current_dir: str):
         newF.pop('DELETE')
     
     if newF:
-        print_success(f'Required folders for sorting: {newF} Total files : {total_files}')
+        print_success(f'\nRequired folders for sorting: {newF} Total files : {total_files}')
 
     return [key for key in newF]
 
 
-def sort_files(current_dir: str, folders: list):
+def organize_files(current_dir: str, folders: list):
     """
     Sorts files in provided directory
     @params:
@@ -139,12 +138,12 @@ def sort_files(current_dir: str, folders: list):
         folders      - Required  : Required folders for sorting (List)
     """
     print_success('\nSorting...\n')
+
     files_length: int = len(os.listdir(current_dir))
     total_sorted_files: int = 0
     deleted_files: int = 0
 
-    printProgressBar(total_sorted_files, files_length,
-                     prefix='Progress:', suffix='Complete', length=50)
+    printProgressBar(total_sorted_files, files_length, prefix='Progress:', suffix='Complete', length=50)
     t1_start = time.process_time()
 
     # loops over current_directory
@@ -157,7 +156,7 @@ def sort_files(current_dir: str, folders: list):
             # Removes file if contains given key value in the config e.g. 'Hip-Hop'
             elif (
                 'DELETE' in config
-                and config['DELETE'] != ['None']
+                and config['DELETE'] != []
                 and any([d in filename for d in (config['DELETE'])])
                 or file_ext in config['DELETE']
               ):
@@ -206,5 +205,6 @@ def sort_files(current_dir: str, folders: list):
         printProgressBar(total_sorted_files, files_length, prefix='Progress:', suffix='Complete', length=50)
 
     t1_stop = time.process_time()
+    time.sleep(0.2)
     print_success(
         f'\nSorted : {total_sorted_files - len(folders)} files \nDeleted : {deleted_files} files \nIn {round(t1_stop - t1_start, 3)} seconds')

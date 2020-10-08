@@ -1,6 +1,6 @@
 '''
-For f_o to work, ensure more than one key, as in 'Music', and more than one value ['.mp4', '...'] or 
-['Hip-Hop', ['...'] is in the config dictionary below. Values are case censitive and all files that 
+For f_o to work, ensure more than one key, as in 'Music,' and more than one value ['.mp4', '...'] or 
+['Hip-Hop', ['...'] is in the config dictionary below. Values are case-sensitive and all files that 
 are not found in the config will be automatically sorted into an 'Others' folder.
 
 You can enable or disable keys/values by commenting them out with # for single line or ''' ''' for multiline.
@@ -35,7 +35,7 @@ You can enable or disable keys/values by commenting them out with # for single l
 config: dict = {
   
     # Delete by keywords or extentions here:  e.g. 'value' or '.value'
-    'DELETE': ['None'], # <<< *** CAUTION: ANY FILE WITH VALUES ENTERED HERE WILL BE PERMANENTLY DELETED
+    'DELETE': [], # <<< *** CAUTION: ANY FILE WITH VALUES ENTERED HERE WILL BE PERMANENTLY DELETED
 
     # Sort by keywords here:  e.g. 'value'
     'Genre': ['House', 'Hip-Hop', 'Pop'],

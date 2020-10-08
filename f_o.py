@@ -1,4 +1,5 @@
 import getpass
+import time
 
 from functions.os_functions import init_f_o
 from functions.utlis import Style, validate_path, print_error, print_success, print_primary
@@ -23,9 +24,10 @@ while run_f_o:
     if not current_dir:
         print_error("Please enter a folder pathway \n")
     elif not validate_path(current_dir):
-        print_error(f'{current_dir} does not exist')
+        print_error(f'Pathway: {current_dir} does not exist \n')
     else:
         print_success("Pathway Exists!\n")
+        time.sleep(0.2)
         confirm_input = str(input(
             Style.orange + f'Confirm folder pathway : {current_dir} (y/n) > ' + Style.reset).lower())
         if confirm_input == 'y':
@@ -37,6 +39,7 @@ while run_f_o:
         else:
             print_error("Please confirm with 'y' or 'n'\n")
 
+time.sleep(0.2)
 print_primary("""
 **** Finished Running...f_o ****
 """)
