@@ -33,7 +33,7 @@ def create_folders(current_dir: str):
                     f'{file_exists} already exist.. To continue, confirm with "y" below \n')
 
             confirm_folders = str(input(
-                Style.orange + f'Confirm folders created : {folders} (y/n) > ' + Style.reset).lower())
+                Style.orange + f'? Confirm folders created : {folders} (y/n) > ' + Style.reset).lower())
             
             if confirm_folders == 'y':
                 print()
@@ -76,6 +76,8 @@ def required_folders(current_dir: str):
                 print_error(
                     "Please create a valid config e.g. config = {'Images': ['.png', 'Landsape'],} \n")
                 break
+            elif not file_ext:
+                pass
             else:
                 total_files += 1
                 for key in config:

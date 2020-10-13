@@ -6,15 +6,15 @@ from functions.utlis import Style, validate_path, print_error, print_success, pr
 
 
 print_primary(f"""
-**** Running...f_o ****
+{Style.bold + '**** Running...f_o ****' + Style.reset + Style.lightcyan}
 
-Hey {getpass.getuser()},
+Hey {Style.bold + getpass.getuser() + Style.reset + Style.lightcyan},
 
 Thanks for using f_o!
 
 Please revise config.py for sorting customization.
 
-To get started, enter a folder pathway. Ex : User/Documents/sort_folder
+To get started, enter a folder pathway, ex : {Style.underline + 'User/Documents/sort_folder' + Style.reset}
 """)
 
 run_f_o: bool = True
@@ -29,7 +29,7 @@ while run_f_o:
         print_success("Pathway Exists!\n")
         time.sleep(0.2)
         confirm_input = str(input(
-            Style.orange + f'Confirm folder pathway : {current_dir} (y/n) > ' + Style.reset).lower())
+            Style.orange + f'? Confirm folder pathway : {current_dir} (y/n) > ' + Style.reset).lower())
         if confirm_input == 'y':
             # Initiates file sorting process
             init_f_o(current_dir)
@@ -40,6 +40,6 @@ while run_f_o:
             print_error("Please confirm with 'y' or 'n'\n")
 
 time.sleep(0.2)
-print_primary("""
-**** Finished Running...f_o ****
+print_primary(f"""
+{Style.bold + '**** Finished Running...f_o ****' + Style.reset}
 """)

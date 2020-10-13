@@ -13,6 +13,11 @@ You can enable or disable keys/values by commenting them out with # for single l
 
     Delete by keywords or extentions.
     'DELETE': [House', 'Hip-Hop', 'Pop', '.png', '.mp3', '.pdf'],
+    
+    Or sort files by keywords e.g. 'value'
+      >> 'Genre': ['House', 'Hip-Hop', 'Pop'],
+      >> 'Cuisine': ['French', 'Jamican', 'Mexican'],
+      >> 'Trash': ['random_stuff', 'random', 'stuff']
 
     Or sort files by generic file extentions:
       >> 'Images': ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.HEIC'],
@@ -21,14 +26,6 @@ You can enable or disable keys/values by commenting them out with # for single l
       >> 'Movies': ['.mp4', '.mov', '.flv', '.m4v', '.3gp', '.3gp', 'MTS', '.M2TS', '.TS']
       >> 'Trash': ['.mp4', '.png', '.pdf']
     
-    Or sort files by keywords e.g. 'value'
-      >> 'Genre': ['House', 'Hip-Hop', 'Pop'],
-      >> 'Cuisine': ['French', 'Jamican', 'Mexican'],
-      >> 'Trash': ['random_stuff', 'random', 'stuff']
-
-    Or delete files with keywords e.g. '.value'
-      >> 'DELETE': ['House', 'Hip-Hop', '.png', '.pdf'],
-
 '''
 
 # Edit config here:

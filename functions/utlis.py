@@ -6,18 +6,14 @@ class Style:
     error = '\033[31m'
     lightblue = '\033[94m'
     lightcyan = '\033[96m'
+    green = '\033[32m'
     orange = '\033[33m'
     bold = '\033[01m'
-    disable = '\033[02m'
     underline = '\033[04m'
+    disable = '\033[02m'
     reverse = '\033[07m'
-    green = '\033[32m'
-    blue = '\033[34m'
     purple = '\033[35m'
     cyan = '\033[36m'
-    lightred = '\033[91m'
-    lightgreen = '\033[92m'
-    yellow = '\033[93m'
 
 
 # Print functions with Style colours
