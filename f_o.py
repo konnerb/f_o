@@ -17,8 +17,7 @@ Please revise config.py for sorting customization.
 To get started, enter a folder pathway, ex : {Style.underline + 'User/Documents/sort_folder' + Style.reset}
 """)
 
-run_f_o: bool = True
-while run_f_o:
+while True:
     current_dir = input(
         Style.lightcyan + "Folder pathway : " + Style.reset).strip()
     if not current_dir:
@@ -33,7 +32,7 @@ while run_f_o:
         if confirm_input == 'y':
             # Initiates file sorting process
             init_f_o(current_dir)
-            run_f_o = False
+            break
         elif confirm_input == 'n':
             print_error("Please enter correct file pathway \n")
         else:

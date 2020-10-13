@@ -6,8 +6,6 @@ from config import config
 from functions.utlis import printProgressBar, validate_path, Style, print_error, print_success, print_primary
 
 # Initiates file sorting process
-
-
 def init_f_o(current_dir):
     create_folders(current_dir)
 
@@ -18,8 +16,7 @@ def create_folders(current_dir: str):
     @params:
         current_dir   - Required  : current directory (Str)
     """
-    run_prompts: bool = True
-    while run_prompts:
+    while True:
         folders: list = required_folders(current_dir)
         file_exists: list = [f for f in folders if validate_path(current_dir, f)]
         if not folders:
@@ -49,7 +46,7 @@ def create_folders(current_dir: str):
                     except PermissionError:
                         print_error('Access denied...')
 
-                run_prompts = False
+                break
             elif confirm_folders == 'n':
                 print_error("\nPlease revise config. Then restart f_o :)")
                 break
@@ -121,13 +118,17 @@ def required_folders(current_dir: str):
             print_error(f'{f} already exists...')
         except PermissionError:
             print_error('Access denied...')
+    
+    print()
 
     if 'DELETE' in newF:
         print_error('Deleting : ' + str(newF['DELETE']) + ' files')
         newF.pop('DELETE')
     
     if newF:
-        print_success(f'\nRequired folders for sorting: {newF} Total files : {total_files}')
+        print_success(f'Required folders for sorting: {newF} Total files : {total_files}')
+
+    print()
 
     return [key for key in newF]
 
