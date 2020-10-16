@@ -30,7 +30,7 @@ def create_folders(current_dir: str):
                     f'{file_exists} already exist.. To continue, confirm with "y" below \n')
 
             confirm_folders = str(input(
-                Style.orange + f'? Confirm folders created : {folders} (y/n) > ' + Style.reset).lower())
+                Style.orange + f'? Confirm folders created : {folders} (Y/n) > ' + Style.reset).lower())
             
             if confirm_folders == 'y':
                 print()
@@ -39,7 +39,7 @@ def create_folders(current_dir: str):
                 for folder in gh:
                     try:
                         os.mkdir(os.path.join(current_dir, str(folder)))
-                        print_success(f'Created folder...{folder}')
+                        print_success(f'✔︎ Created folder...{folder}')
 
                     except FileExistsError:
                         print_error(f'{folder} already exists...')
@@ -210,4 +210,4 @@ def organize_files(current_dir: str, folders: list):
     t1_stop = time.process_time()
     time.sleep(0.2)
     print_success(
-        f'\nSorted : {total_sorted_files - len(folders)} files \nDeleted : {deleted_files} files \nIn {round(t1_stop - t1_start, 3)} seconds')
+        f'\n✔︎ Sorted : {total_sorted_files - len(folders)} files \n✔︎ Deleted : {deleted_files} files \nIn {round(t1_stop - t1_start, 3)} seconds')

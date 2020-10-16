@@ -1,4 +1,6 @@
 import os
+import platform
+import subprocess
 
 # Colours for console text
 class Style:
@@ -58,3 +60,16 @@ def validate_path(current_dir: str, folder: str = '') -> bool:
         return bool(os.path.exists(current_dir + '/' + str(folder)))
     else:
         return bool(os.path.exists(current_dir))
+
+def open_folder(current_dir):
+    """
+    Opens current working directory folder
+    @params:
+        current_dir  - Required  : current directory path (Str)
+    """
+    if platform.system() == "Windows":
+        subprocess.Popen(["explorer", current_dir])
+    elif platform.system() == "Darwin":
+        subprocess.Popen(["open", current_dir])
+    else:
+        subprocess.Popen(["xdg-open", current_dir])

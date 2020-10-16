@@ -1,8 +1,10 @@
 import getpass
 import time
+import subprocess
+import platform
 
 from functions.os_functions import init_f_o
-from functions.utlis import Style, validate_path, print_error, print_success, print_primary
+from functions.utlis import Style, validate_path, open_folder, print_error, print_success, print_primary
 
 
 print_primary(f"""
@@ -25,11 +27,13 @@ while True:
     elif not validate_path(current_dir):
         print_error(f'Pathway: {current_dir} does not exist \n')
     else:
-        print_success("Pathway Exists!\n")
+        print_success("✔︎ Pathway Exists!\n")
         time.sleep(0.2)
         confirm_input = str(input(
-            Style.orange + f'? Confirm folder pathway : {current_dir} (y/n) > ' + Style.reset).lower())
+            Style.orange + f'? Confirm folder pathway : {current_dir} (Y/n) > ' + Style.reset).lower())
         if confirm_input == 'y':
+            # Opens folder
+            open_folder(current_dir)
             # Initiates file sorting process
             init_f_o(current_dir)
             break
