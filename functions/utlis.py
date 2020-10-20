@@ -61,7 +61,7 @@ def validate_path(current_dir: str, folder: str = '') -> bool:
     else:
         return bool(os.path.exists(current_dir))
 
-def open_folder(current_dir):
+def open_folder(current_dir: str):
     """
     Opens current working directory folder
     @params:

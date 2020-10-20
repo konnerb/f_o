@@ -1,7 +1,5 @@
 import getpass
 import time
-import subprocess
-import platform
 
 from functions.os_functions import init_f_o
 from functions.utlis import Style, validate_path, open_folder, print_error, print_success, print_primary
@@ -32,7 +30,7 @@ while True:
         confirm_input = str(input(
             Style.orange + f'? Confirm folder pathway : {current_dir} (Y/n) > ' + Style.reset).lower())
         if confirm_input == 'y':
-            # Opens folder
+            # Opens cwd folder
             open_folder(current_dir)
             # Initiates file sorting process
             init_f_o(current_dir)
@@ -44,5 +42,5 @@ while True:
 
 time.sleep(0.2)
 print_primary(f"""
-{Style.bold + '**** Finished Running...f_o ****' + Style.reset}
+    {Style.bold + '**** Finished Running...f_o ****' + Style.reset}
 """)

@@ -122,7 +122,8 @@ def required_folders(current_dir: str):
     print()
 
     if 'DELETE' in newF:
-        print_error('Deleting : ' + str(newF['DELETE']) + ' files')
+        print_error('Deleting : ' + str(newF['DELETE']) + 
+            ' files << CAUTION: THESE FILES WILL BE PERMANENTLY DELETED')
         newF.pop('DELETE')
     
     if newF:
