@@ -2,6 +2,8 @@ import os
 import platform
 import subprocess
 
+from config import config
+
 # Colours for console text
 class Style:
     reset = '\033[0m'
@@ -61,7 +63,8 @@ def validate_path(current_dir: str, folder: str = '') -> bool:
     else:
         return bool(os.path.exists(current_dir))
 
-def open_folder(current_dir: str):
+
+def show_folder(current_dir: str):
     """
     Opens current working directory folder
     @params:
@@ -73,3 +76,12 @@ def open_folder(current_dir: str):
         subprocess.Popen(["open", current_dir])
     else:
         subprocess.Popen(["xdg-open", current_dir])
+
+
+def print_config():
+    """
+    Shows current configuration from config.py
+    """
+    print_success("\nYour current config: \n")
+    for key, value in config.items():
+        print_success("{} >> {}".format(key, value))
